@@ -35,16 +35,21 @@ def translation_matrix(x, y, z):
     ])
 
 def project_points(points, focal_length):
-    transformation_matrix = np.array([[0,0,0,-focal_length], [1,0,0,0], [0,1,0,0], [0,0,-1/focal_length,0]])
+    transformation_matrix = np.array([
+        [focal_length, 0, 0, 0],
+        [0, focal_length, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1]
+    ])
+
     matrix_wp = transformation_matrix @ points
-    print(matrix_wp)
     projected_points = []
     for point in matrix_wp.T:
-        w = point[3]
-        projected_points.append((point[1]/w, point[2]/w))
-
+        w = point[2]
+        projected_points.append((point[0] / w, point[1] / w))
 
     return np.array(projected_points)
+
 
 
 WIDTH, HEIGHT = 800, 600
@@ -91,15 +96,15 @@ while running:
             running = False
 
     angle += 0.001
-    rotated_vertices =rotation_matrix_z(angle) @ rotation_matrix_y(angle) @ rotation_matrix_x(angle) @ vertices
+    rotated_vertices = translation_matrix(700, 500, 0) @ rotation_matrix_z(angle) @ rotation_matrix_y(angle) @ rotation_matrix_x(angle) @ vertices
 
     projected_points = project_points(rotated_vertices, focal_length)
     # print(projected_points)
     screen.fill((0, 0, 0))
 
     for edge in edges:
-        start = (projected_points[edge[0]][0] + WIDTH/2, projected_points[edge[0]][1] + HEIGHT/2)
-        end = (projected_points[edge[1]][0] + WIDTH/2, projected_points[edge[1]][1] + HEIGHT/2)
+        start = projected_points[edge[0]]
+        end = projected_points[edge[1]]
         pygame.draw.line(screen, (255, 255, 255), start, end, 1)
 
     pygame.display.flip()
