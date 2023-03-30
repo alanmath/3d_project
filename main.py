@@ -60,7 +60,7 @@ vertices = np.array([
     [1, -1, 1],
     [1, 1, -1],
     [1, 1, 1],
-]) * 100
+])*100
 vertices = vertices.T
 vertices = np.vstack((vertices, np.ones((1, vertices.shape[1]))))
 
@@ -90,8 +90,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    angle += 0.001
-    rotated_vertices =rotation_matrix_z(angle) @ rotation_matrix_y(angle) @ rotation_matrix_x(angle) @ vertices
+    angle += 0.005
+    rotated_vertices = translation_matrix(0, 0, 200) @ rotation_matrix_x(angle)  @ rotation_matrix_y(angle) @ rotation_matrix_z(angle) @ vertices
 
     projected_points = project_points(rotated_vertices, focal_length)
     # print(projected_points)
