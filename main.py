@@ -55,6 +55,8 @@ vertices = np.array([
     [1, 1, -1],
     [1, 1, 1],
 ]) * 100
+vertices = vertices.T
+vertices = np.vstack((vertices, np.ones((1, vertices.shape[1]))))
 
 edges = [
     (0, 1),
@@ -83,7 +85,7 @@ while running:
             running = False
 
     angle += 0.00
-    rotated_vertices = vertices.dot(rotation_matrix_x(angle)).dot(rotation_matrix_y(angle)).dot(rotation_matrix_z(angle))
+    rotated_vertices = rotation_matrix_z(angle) @ rotation_matrix_y(angle) @ rotation_matrix_x(angle) @ vertices
 
     projected_points = project_points(rotated_vertices, focal_length)
 
