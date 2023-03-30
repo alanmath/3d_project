@@ -4,23 +4,26 @@ import numpy as np
 
 def rotation_matrix_x(angle):
     return np.array([
-        [1, 0, 0],
-        [0, np.cos(angle), -np.sin(angle)],
-        [0, np.sin(angle), np.cos(angle)]
+        [1, 0, 0, 0],
+        [0, np.cos(angle), -np.sin(angle), 0],
+        [0, np.sin(angle), np.cos(angle), 0], 
+        [0, 0, 0, 1]
     ])
 
 def rotation_matrix_y(angle):
     return np.array([
-        [np.cos(angle), 0, np.sin(angle)],
-        [0, 1, 0],
-        [-np.sin(angle), 0, np.cos(angle)]
+        [np.cos(angle), 0, np.sin(angle), 0],
+        [0, 1, 0, 0],
+        [-np.sin(angle), 0, np.cos(angle), 0], 
+        [0, 0, 0, 1]
     ])
 
 def rotation_matrix_z(angle):
     return np.array([
-        [np.cos(angle), -np.sin(angle), 0],
-        [np.sin(angle), np.cos(angle), 0],
-        [0, 0, 1]
+        [np.cos(angle), -np.sin(angle), 0, 0],
+        [np.sin(angle), np.cos(angle), 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1]
     ])
 
 def project_points(points, focal_length):
@@ -52,6 +55,8 @@ vertices = np.array([
     [1, 1, -1],
     [1, 1, 1],
 ]) * 100
+vertices = vertices.T
+vertices = np.vstack((vertices, np.ones((1, vertices.shape[1]))))
 
 edges = [
     (0, 1),
@@ -80,7 +85,7 @@ while running:
             running = False
 
     angle += 0.00
-    rotated_vertices = vertices.dot(rotation_matrix_x(angle)).dot(rotation_matrix_y(angle)).dot(rotation_matrix_z(angle))
+    rotated_vertices = rotation_matrix_z(angle) @ rotation_matrix_y(angle) @ rotation_matrix_x(angle) @ vertices
 
     projected_points = project_points(rotated_vertices, focal_length)
 
