@@ -116,7 +116,9 @@ while running:
 
     # Atualiza a posição do jogador de acordo com o estado das teclas
     if keys_pressed.get(pygame.K_w):
-        player_direction[2] -= MOVE_SPEED
+        if player_direction[2] > -100:
+            print(player_direction[2])
+            player_direction[2] -= MOVE_SPEED
     elif keys_pressed.get(pygame.K_s):
         player_direction[2] += MOVE_SPEED
 
@@ -131,12 +133,12 @@ while running:
             # Calcula a diferença entre a posição atual e a posição anterior do mouse
             mouse_diff = np.array(pygame.mouse.get_pos()) - prev_mouse_pos
             # Rotaciona o vetor player_direction em torno do eixo y
-            player_direction = rotation_matrix_y(mouse_diff[0]/5) @ player_direction
+            player_direction = rotation_matrix_y(-mouse_diff[0]/5) @ player_direction
             # Rotaciona o vetor player_direction em torno do eixo x
-            player_direction = rotation_matrix_x(-mouse_diff[1]/5) @ player_direction
+            player_direction = rotation_matrix_x(mouse_diff[1]/5) @ player_direction
         prev_mouse_pos = np.array(pygame.mouse.get_pos())
 
-    angle += 0.0
+    angle += 1
 
     rotated_vertices = translation_matrix(player_direction[0], player_direction[1], player_direction[2] + 200) @ rotation_matrix_x(angle) @ rotation_matrix_y(angle + player_angle) @ rotation_matrix_z(angle) @ vertices
 
@@ -154,9 +156,9 @@ while running:
         end_z_distance = projected_points[edge[1]][2]
 
         grossura_linha = 1/(start_z_distance/1400 + end_z_distance/1400)
-        print(grossura_linha)
 
-        pygame.draw.line(screen, (255, 255, 255), start, end, grossura_linha.astype(int))
+        if projected_points[edge[0]][2] > 0 and projected_points[edge[1]][2] > 0:
+            pygame.draw.line(screen, (255, 255, 255), start, end, grossura_linha.astype(int))
 
 
     pygame.display.flip()
