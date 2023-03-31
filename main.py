@@ -85,6 +85,14 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Cubo Girando")
 clock = pygame.time.Clock()
 
+# Define as constantes de movimentação do jogador
+MOVE_SPEED = 5
+ROT_SPEED = 2
+
+# Define a posição inicial e orientação do jogador
+player_pos = np.array([0, 0, 0])
+player_angle = 0
+
 running = True
 angle = 0
 while running:
@@ -92,8 +100,24 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    angle += 0.3
-    rotated_vertices = translation_matrix(0, 0, 200) @ rotation_matrix_x(angle)  @ rotation_matrix_y(angle) @ rotation_matrix_z(angle) @ vertices
+        # Captura as teclas pressionadas pelo usuário
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_w:
+                # Move o jogador para frente
+                focal_length += 10
+            elif event.key == pygame.K_s:
+                # Move o jogador para trás
+                focal_length -= 10
+
+            elif event.key == pygame.K_a:
+                # Rotaciona o jogador para a esquerda
+                player_angle += ROT_SPEED
+            elif event.key == pygame.K_d:
+                # Rotaciona o jogador para a direita
+                player_angle -= ROT_SPEED
+
+    angle += 0.0
+    rotated_vertices = translation_matrix(player_pos[0], player_pos[1], player_pos[2] + 200) @ rotation_matrix_x(angle) @ rotation_matrix_y(angle + player_angle) @ rotation_matrix_z(angle) @ vertices
 
     projected_points = project_points(rotated_vertices, focal_length)
     screen.fill((0, 0, 0))
