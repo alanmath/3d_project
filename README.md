@@ -37,7 +37,7 @@ R_z = \begin{bmatrix}
 $$
 
 Matriz de translação:  
-A matriz de translação permite movimentar o cubo no espaço, além de possibilitar o afastamento dele o suficiente para que esteja na frente da camêra. A matriz 
+A matriz de translação permite movimentar o cubo no espaço, além de possibilitar o afastamento dele o suficiente para que esteja na frente da câmera.
 
 $$
 T = \begin{bmatrix}
@@ -50,7 +50,8 @@ T = \begin{bmatrix}
 $$
 
 Matriz de projeção (3D para 2D):  
-Para realizar a projeção das coordenadas em 3D do cubo, foi utilizada uma matriz de projeção...
+Para realizar a projeção das coordenadas em 3D do cubo, foi utilizada uma matriz de projeção...  
+
 $$
 P = \begin{bmatrix}
 0 & 0 & 0 & -d \\
