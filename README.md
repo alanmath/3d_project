@@ -1,7 +1,7 @@
 # 3D cube projection project
 ## projeção de cubo 
 
-<img src="3d_cube.gif" width=300>
+<img src="3d_cube.gif" width=500>
 
 
 ### Introdução  
