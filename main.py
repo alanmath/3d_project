@@ -133,9 +133,9 @@ while running:
             # Calcula a diferença entre a posição atual e a posição anterior do mouse
             mouse_diff = np.array(pygame.mouse.get_pos()) - prev_mouse_pos
             # Rotaciona o vetor player_direction em torno do eixo y
-            player_direction = rotation_matrix_y(-mouse_diff[0]/5) @ player_direction
+            player_direction = rotation_matrix_y(+mouse_diff[0]/5) @ player_direction
             # Rotaciona o vetor player_direction em torno do eixo x
-            player_direction = rotation_matrix_x(mouse_diff[1]/5) @ player_direction
+            player_direction = rotation_matrix_x(-mouse_diff[1]/5) @ player_direction
         prev_mouse_pos = np.array(pygame.mouse.get_pos())
 
     angle += 1
