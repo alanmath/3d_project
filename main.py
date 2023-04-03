@@ -149,6 +149,8 @@ while running:
 
         # Captura as teclas pressionadas pelo usuário
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
             keys_pressed[event.key] = True
         elif event.type == pygame.KEYUP:
             keys_pressed[event.key] = False
