@@ -50,10 +50,17 @@ T = \begin{bmatrix}
 $$
 
 Matriz de projeção (3D para 2D):  
-Para realizar a projeção das coordenadas em 3D do cubo, foi utilizada uma matriz de projeção...  
+Para realizar a projeção das coordenadas em 3D do cubo, foi utilizada uma matriz de projeção P apresentada abaixo: 
 
 $$
 P = \begin{bmatrix}
+z_p\\
+x_p w_p\\
+y_p w_p\\
+w_p
+\end{bmatrix}  
+
+= \begin{bmatrix}
 0 & 0 & 0 & -d \\
 1 & 0 & 0 & 0 \\
 0 & 1 & 0 & 0 \\
@@ -62,8 +69,7 @@ P = \begin{bmatrix}
 \hspace{0.5in}
 $$
 
-Explicação: 
-
+Com Isso, é determinar o $x_p$ e $y_p$, dividindo a segunda e terceira linha da matriz por $w_p$, que é o quarto elemento da matriz.O $d$ é a distância focal, que é a distância entre o anteparo e a câmera. A manipulação utilizada para chegar nessa matriz é a seguinte:  
 
 <img src="explication.jpg" width=500>
 
@@ -75,7 +81,6 @@ No código foi criado um de aresta 2 e multiplicado por 40 para se tornar um cub
   
 2. Aplicada as rotações.  
 Com o cubo na origem é possível aplicar as rotações a partir da multiplicação matricial das coordenadas do cubo por cada uma das matrizes de rotação apresentada. A ordem não importa, desde que os pontos do cubo estejam mais a direita na multiplicação, ou seja:  
-$ M = R_x R_y R_z C $  
 Em que M é a matriz rotacionada e C a matriz com os pontos do cubo.
   
 3. Aplicação da translação.  
@@ -88,7 +93,7 @@ Após a translação que define a posição inicial do cubo frente ao "jogador",
 Uma nova rotação é realizada para que o campo de visão seja alterado conforme o jogador move o mouse. Uma função no código permite a captura do vetor que representa a posição antiga e nova do mouse, formando em seguida um vetor deslocamento, usado para incrementar o ângulo de rotação em x e em y. É importante salientar que, esses últimos passos se referem a ações do jogador, mas na prática, elas são realizadas no cubo. Ou seja, o "jogador não roda, o mundo roda em torno dele" (alto estima não falta). 
   
 5. Projeção dos pontos no anteparo.  
-Nesse passo, é utilizada a matriz de projeção para multiplicar cada um dos pontos do cubo. A projeção é realizada num anteparo, que representa um plano em z = -d, em que d é a distância focal.
+Nesse passo, é utilizada a matriz de projeção para multiplicar cada um dos pontos do cubo. A projeção é realizada num anteparo, que representa um plano em z = -k, em que k é a distância focal.
   
 6. Apresentar na tela e adicionar interatividade.  
 Por fim, os pontos são apresentados com uma pequena translação, para que a origem passe a ser o centro da tela (uma particularidade da implementação com o pygame). Além disso, foram adicionadas teclas que permitem alterar parâmetros da simulação, de forma dinâmica, adicionando interatividade. 

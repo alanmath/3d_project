@@ -165,7 +165,7 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 4: 
                 focal_length += 10
-                print(focal_length)
+               
             elif event.button == 5:
                 if focal_length > 10:
                     focal_length -= 10
@@ -235,7 +235,7 @@ while running:
         # Only draw the line if both the start and end points are in front of the camera.
         if projected_points[edge[0]][2] > 0 and projected_points[edge[1]][2] > 0 and grossura_linha <30:
             pygame.draw.line(screen, (255, 255, 255), start, end, grossura_linha.astype(int))
-            print(start, end, start_z_distance, end_z_distance, grossura_linha)
+        
     # Update the display and limit the framerate to 60 FPS.
     pygame.display.flip()
     clock.tick(60)
