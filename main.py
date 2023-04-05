@@ -70,7 +70,11 @@ def project_points(points, focal_length):
     projected_points = []
     for i,point in enumerate(matrix_wp.T):
         w = point[3]
-        projected_points.append((point[1]/w, point[2]/w, points[2][i]))
+        if points[2][i] > 0:
+
+            projected_points.append((point[1]/w, point[2]/w, points[2][i]))
+        else:
+            projected_points.append((0, 0, 0))
 
 
     return np.array(projected_points)
@@ -133,6 +137,7 @@ player_pos = np.array([0, 0, 0, 1])
 player_angle = 0
 
 # Define the initial direction of the player.
+player_position = np.array([0, 0, 1, 1])
 player_direction = np.array([0, 0, 1, 1])
 
 # Initialize prev_mouse_pos to None.
@@ -140,6 +145,8 @@ prev_mouse_pos = None
 
 # Initialize the keys_pressed dictionary to an empty dictionary.
 keys_pressed = {}
+
+actual_angle_rotation = 0
 
 # Start the game loop.
 while running:
@@ -157,32 +164,44 @@ while running:
 
     # Atualiza a posição do jogador de acordo com o estado das teclas
     if keys_pressed.get(pygame.K_w):
-        if player_direction[2] > -100: ## verfica se o cubo já está muito próximo da "câmera"
-            player_direction[2] -= MOVE_SPEED
+         ## verfica se o cubo já está muito próximo da "câmera"
+        player_position[2] -= MOVE_SPEED
     elif keys_pressed.get(pygame.K_s):
-        player_direction[2] += MOVE_SPEED
+        player_position[2] += MOVE_SPEED
 
     if keys_pressed.get(pygame.K_a):
-        player_direction = translation_matrix(-ROT_SPEED,0,0) @ player_direction
+        player_position[0] -= MOVE_SPEED
     elif keys_pressed.get(pygame.K_d):
-        player_direction = translation_matrix(ROT_SPEED,0,0) @ player_direction
+        player_position[0] += MOVE_SPEED
+    
+    if keys_pressed.get(pygame.K_e):
+        actual_angle_rotation += 0.2
+    elif keys_pressed.get(pygame.K_q):
+        actual_angle_rotation -= 0.2
 
         # Captura os movimentos do mouse
     if event.type == pygame.MOUSEMOTION:
         if prev_mouse_pos is not None:
             # Calcula a diferença entre a posição atual e a posição anterior do mouse
+            
             mouse_diff = np.array(pygame.mouse.get_pos()) - prev_mouse_pos
-            # Rotaciona o vetor player_direction em torno do eixo y
-            player_direction = rotation_matrix_y(+mouse_diff[0]/5) @ player_direction
-            # Rotaciona o vetor player_direction em torno do eixo x
-            player_direction = rotation_matrix_x(-mouse_diff[1]/5) @ player_direction
+            # Rotaciona o vetor player_position em torno do eixo y
+            player_direction[1] += mouse_diff[0]/3
+            # Rotaciona o vetor player_position em torno do eixo x
+            player_direction[0] -= mouse_diff[1]/3
         prev_mouse_pos = np.array(pygame.mouse.get_pos())
 
     # Incrementa o angulo de rotação do cubo
-    angle += 1
+    angle += actual_angle_rotation
+
+
 
     # Apply rotations and translations to the vertices of the cube to simulate its movement.
-    rotated_vertices = translation_matrix(player_direction[0], player_direction[1], player_direction[2] + 200) @ rotation_matrix_x(angle) @ rotation_matrix_y(angle + player_angle) @ rotation_matrix_z(angle) @ vertices
+    rotate =   (rotation_matrix_x(player_direction[0]) @ rotation_matrix_y(player_direction[1]) )
+
+
+    rotated_vertices = rotate @ translation_matrix(player_position[0],0, player_position[2]) @ translation_matrix(0, 0, 200) @ rotation_matrix_x(angle) @ rotation_matrix_y(angle) @ rotation_matrix_z(angle) @ vertices
+    
 
     # Project the vertices onto a 2D plane using the pinhole camera model.
     projected_points = project_points(rotated_vertices, focal_length)
@@ -190,9 +209,9 @@ while running:
     # Fill the screen with black.
     screen.fill((0, 0, 0))
 
+
     # Draw circles at the projected points on the screen.
-    for point in projected_points:
-        pygame.draw.circle(screen, (255, 255, 255), (int(point[0] + WIDTH/2), int(point[1] + HEIGHT/2)), 5)
+
 
     # Draw lines between the projected points to create the wireframe of the cube.
     for edge in edges:
@@ -208,9 +227,9 @@ while running:
         grossura_linha = 1/(start_z_distance/1400 + end_z_distance/1400)
 
         # Only draw the line if both the start and end points are in front of the camera.
-        if projected_points[edge[0]][2] > 0 and projected_points[edge[1]][2] > 0:
+        if projected_points[edge[0]][2] > 0 and projected_points[edge[1]][2] > 0 and grossura_linha <30:
             pygame.draw.line(screen, (255, 255, 255), start, end, grossura_linha.astype(int))
-
+            print(start, end, start_z_distance, end_z_distance, grossura_linha)
     # Update the display and limit the framerate to 60 FPS.
     pygame.display.flip()
     clock.tick(60)
