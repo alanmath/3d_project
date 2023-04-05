@@ -63,6 +63,8 @@ P = \begin{bmatrix}
 $$
 
 Explicação: 
+
+
 <img src="explication.jpg" width=500>
 
 
