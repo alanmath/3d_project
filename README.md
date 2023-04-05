@@ -75,7 +75,7 @@ No código foi criado um de aresta 2 e multiplicado por 40 para se tornar um cub
   
 2. Aplicada as rotações.  
 Com o cubo na origem é possível aplicar as rotações a partir da multiplicação matricial das coordenadas do cubo por cada uma das matrizes de rotação apresentada. A ordem não importa, desde que os pontos do cubo estejam mais a direita na multiplicação, ou seja:  
-$ M = R_x  R_y  R_z C  $  
+$ M = R_x R_y R_z C $  
 Em que M é a matriz rotacionada e C a matriz com os pontos do cubo.
   
 3. Aplicação da translação.  
