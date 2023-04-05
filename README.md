@@ -62,6 +62,9 @@ P = \begin{bmatrix}
 \hspace{0.5in}
 $$
 
+Explicação: 
+<img src="explication.jpg" width=500>
+
 
 Como funciona:  
 O procedimento para projetar a imagem do cubo rotacionando foi:

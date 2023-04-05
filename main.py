@@ -161,6 +161,15 @@ while running:
             keys_pressed[event.key] = True
         elif event.type == pygame.KEYUP:
             keys_pressed[event.key] = False
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 4: 
+                focal_length += 10
+                print(focal_length)
+            elif event.button == 5:
+                if focal_length > 10:
+                    focal_length -= 10
+
 
     # Atualiza a posição do jogador de acordo com o estado das teclas
     if keys_pressed.get(pygame.K_w):
@@ -178,6 +187,7 @@ while running:
         actual_angle_rotation += 0.2
     elif keys_pressed.get(pygame.K_q):
         actual_angle_rotation -= 0.2
+
 
         # Captura os movimentos do mouse
     if event.type == pygame.MOUSEMOTION:
