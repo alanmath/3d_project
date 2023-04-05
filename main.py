@@ -219,10 +219,6 @@ while running:
     # Fill the screen with black.
     screen.fill((0, 0, 0))
 
-
-    # Draw circles at the projected points on the screen.
-
-
     # Draw lines between the projected points to create the wireframe of the cube.
     for edge in edges:
         # Get the start and end points of the edge in 2D space.

@@ -79,12 +79,18 @@ $ M = R_x  R_y  R_z C  $
 Em que M é a matriz rotacionada e C a matriz com os pontos do cubo.
   
 3. Aplicação da translação.  
-Em seguida, aplica-se uma translação em z, para garantir que o cubo esteja a uma distância suficiente que permita ser visualizado todos os seus vértices e arestas. No código, existe uma condição para garantir que o centro do cubo não esteja a uma coordenada inferior a 100 no eixo z, eixo escolhido para fixar o plano do anteparo.
+Em seguida, aplica-se uma translação em z, para garantir que o cubo esteja a uma distância suficiente que permita ser visualizado todos os seus vértices e arestas. Contudo, é possível realizar movimentos no mapa que permitirão que o cubo fique mais próximo ou mais distante da câmera.
+
+4. Translação WASD para movimentar-se no mapa.  
+Após a translação que define a posição inicial do cubo frente ao "jogador", é realizada uma nova translação, relativa ao movimento que o personagem realiza no mapa, que é atualizada a cada laço do programa. Essa translação ocorre em x e y, tendo em vista que são os únicos eixos em que o "jogador" pode se movimentar.
+
+5. Rotação do campo de visão da câmera.  
+Uma nova rotação é realizada para que o campo de visão seja alterado conforme o jogador move o mouse. Uma função no código permite a captura do vetor que representa a posição antiga e nova do mouse, formando em seguida um vetor deslocamento, usado para incrementar o ângulo de rotação em x e em y. É importante salientar que, esses últimos passos se referem a ações do jogador, mas na prática, elas são realizadas no cubo. Ou seja, o "jogador não roda, o mundo roda em torno dele" (alto estima não falta). 
   
-4. Projeção dos pontos no anteparo.  
+5. Projeção dos pontos no anteparo.  
 Nesse passo, é utilizada a matriz de projeção para multiplicar cada um dos pontos do cubo. A projeção é realizada num anteparo, que representa um plano em z = -d, em que d é a distância focal.
   
-5. Apresentar na tela e adicionar interatividade.  
+6. Apresentar na tela e adicionar interatividade.  
 Por fim, os pontos são apresentados com uma pequena translação, para que a origem passe a ser o centro da tela (uma particularidade da implementação com o pygame). Além disso, foram adicionadas teclas que permitem alterar parâmetros da simulação, de forma dinâmica, adicionando interatividade. 
 
 ### Como usar?
@@ -95,7 +101,10 @@ a: translada o cubo para a direita (como se o "jogador" se movimentasse para esq
 d: translada o cubo para a esquerda.  
 w: decrementa a distância do cubo.  
 s: incrementa a distância do cubo.  
-
+e: incrmenta a velocidade de rotação do cubo.
+q: decrementa a velocidade de rotação do cubo.
+scroll: altera a distância focal.
+movimento do mouse: altera o campo de visão da câmera.
 
 ### Como instalar?  
 Para garantir o funcionamento da aplicação é recomedado a criação de um ambiente virtual (venv) para instalar as dependência, como apresentado em https://docs.python.org/3/library/venv.html. Após a criação do ambiente, realizar a instalação das bibliotecas numpy e pygame, com os seguintes comandos do terminal:  
