@@ -59,7 +59,6 @@ x_p w_p\\
 y_p w_p\\
 w_p
 \end{bmatrix}  
-
 = \begin{bmatrix}
 0 & 0 & 0 & -d \\
 1 & 0 & 0 & 0 \\
